@@ -1,0 +1,54 @@
+---
+
+
+- name: Ensure the APT cache is up to date
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Update all packages to latest
+  apt:
+    name: "*"
+    state: latest
+
+- name: Install fail2ban
+  apt:
+    name: fail2ban
+    state: latest
+
+# Debian comes with a sufficient fail2ban config - doesn't require tweaking
+- name: Start and enable fail2ban
+  systemd:
+    state: started
+    enabled: yes
+    name: fail2ban
+
+- name: Disable ufw
+  systemd:
+    name: ufw
+    state: stopped
+    enabled: no
+    masked: yes
+
+- name: Install iptables-persistent
+  apt:
+    pkg:
+    - iptables-persistent
+    - netfilter-persistent
+    state: latest
+
+- name: Enable netfilter
+  systemd:
+    name: netfilter-persistent
+    state: started
+    enabled: yes
+
+- name: Drop in iptable rules
+  template:
+    src: iptables_rules
+    dest: "/etc/iptables/rules.v[46]"
+    owner: root
+    group: root
+    mode: '0644'
+
+
