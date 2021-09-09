@@ -9,7 +9,7 @@ opkg update
 # Force authentication for TTY and serial logins
 uci set system.@system[0].ttylogin="1"
 uci commit system
-#/etc/init.d/system restart
+/etc/init.d/system restart
 
 # Set dropbear (The SSH Server) to only listen on LAN
 uci set dropbear.@dropbear[0].Interface="lan"
@@ -57,3 +57,14 @@ config interface 'wwan0'
 " >> /etc/config/network
 
 /etc/init.d/network restart
+
+# Add interface to WAN firewall
+uci add_list firewall.@zone[1].network='wwan0'
+uci commit
+
+# Install WireGuard
+opkg update && opkg install luci-proto-wireguard
+
+
+
+
