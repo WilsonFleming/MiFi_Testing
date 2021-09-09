@@ -13,26 +13,6 @@ provider "aws" {
     region = "eu-west-1"
 }
 
-data "aws_ami" "centos" {
-owners      = ["679593333241"]
-most_recent = true
-
-  filter {
-      name   = "name"
-      values = ["CentOS Linux 7 x86_64 HVM EBS *"]
-  }
-
-  filter {
-      name   = "architecture"
-      values = ["x86_64"]
-  }
-
-  filter {
-      name   = "root-device-type"
-      values = ["ebs"]
-  }
-}
-
 # Create Key Pair
 
 resource "aws_key_pair" "deployer" {
@@ -148,7 +128,7 @@ resource "aws_network_interface" "eth0" {
 # Create AWS Instance
 
 resource "aws_instance" "vpn_server" {
-    ami = data.aws_ami.centos.id
+    ami = "ami-0a8e758f5e873d1c1"
     instance_type = "t2.micro"
 
     network_interface {
