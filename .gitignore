@@ -1,0 +1,6 @@
+vpn_server_config/terraform/.terraform.lock.hcl
+vpn_server_config/terraform/.terraform
+vpn_server_config/terraform/terraform.tfstate
+vpn_server_config/terraform/terraform.tfstate.backup
+*.tfstate
+*.backup
