@@ -1,0 +1,10 @@
+---
+
+- name: Build the server
+  hosts: wg-server
+  
+  roles:
+    - ubuntu_base_configure
+    - ubuntu_wireguard
+  become: yes
+        
