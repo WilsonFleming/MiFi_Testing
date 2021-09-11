@@ -1,7 +1,11 @@
 #!/bin/sh
 
+# Get password
+echo "Enter the new root password for the device."
+read -sp 'Password: ' passwd
+
 # Set password to S Defaukt
-echo -e "P@ssword_12345\nP@ssword_12345"
+echo -e "$passwd\n$passwd"
 
 # Update the package manager
 opkg update
