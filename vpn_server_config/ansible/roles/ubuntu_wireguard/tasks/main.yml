@@ -6,6 +6,14 @@
     state: latest
   become: yes
 
+- name: Allow ip forwarding
+  sysctl: 
+    name: net.ipv4.ip_forward
+    value: '1'
+    sysctl_set: yes
+    state: present
+    reload: yes
+
 - name: Create wireguard directory
   file:
     path: '/etc/wireguard'

@@ -2,4 +2,5 @@
 
 wg_server_ip_address: "192.168.10.1"
 wg_server_port: "4443"
-wg_client_allowed_ips: "192.168.10.2/32 192.168.8.0/24"
+wg_client_wg_ips: "192.168.10.2/32"
+wg_client_subnet_ips: "192.168.8.0/24"

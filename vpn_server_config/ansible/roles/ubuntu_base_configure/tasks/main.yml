@@ -30,11 +30,12 @@
     enabled: no
     masked: yes
 
-- name: Install iptables-persistent
+- name: Install iptables-persistent and netstat
   apt:
     pkg:
     - iptables-persistent
     - netfilter-persistent
+    - net-tools
     state: latest
 
 - name: Enable netfilter
