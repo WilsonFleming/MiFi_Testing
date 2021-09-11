@@ -1,0 +1,16 @@
+[Interface]
+## My VPN server private IP address ##
+Address = {{ wg_server_ip_address }}
+ 
+## My VPN server port ##
+ListenPort = {{ wg_server_port }}
+ 
+## Servers Private Key
+PrivateKey = {{ wg_server_private_key['content'] }}
+
+[Peer]
+## Client public key
+PublicKey = {{ wg_client_public_key }}
+ 
+## client VPN IP address and internal subnet
+AllowedIPs = {{ wg_client_allowed_ips }}

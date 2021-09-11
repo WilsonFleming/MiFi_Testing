@@ -1,0 +1,62 @@
+---
+
+- name: Install wireguard
+  apt:
+    name: wireguard
+    state: latest
+  become: yes
+
+- name: Create wireguard directory
+  file:
+    path: '/etc/wireguard'
+    owner: root
+    group: root
+    mode: '0700'
+    state: directory
+  become: yes
+
+- name: Generate wireguard private key
+  shell: |
+    cd /etc/wireguard
+    wg genkey | tee privatekey | wg pubkey > publickey
+  become: yes
+
+- name: Save the private key as a variable
+  slurp:
+    src: '/etc/wireguard/privatekey'
+  register: wg_server_private_key
+
+- name: Generate a new folder for the pubic / private keypair for the client
+  file:
+    path: '~/wg_client'
+    state: directory
+  become: no
+  delegate_to: localhost
+
+- name: Create the public/private keypair for the client
+  shell: |
+    cd ~/wg_client
+    wg genkey | tee privatekey | wg pubkey > publickey
+  become: no
+  delegate_to: localhost
+
+- name: Store the public key as a variable
+  set_fact:
+    wg_client_public_key: "{{ lookup('file', '~/wg_client/publickey') }}"
+  delegate_to: localhost
+  become: no
+
+- name: Upload the wg.conf file to the wireguard server
+  template:
+    src: wg0.conf.j2
+    dest: /etc/wireguard/wg0.conf
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: Start and enable the wireguard service
+  systemd:
+    name: wg-quick@wg0
+    state: started
+    enabled: yes
+
