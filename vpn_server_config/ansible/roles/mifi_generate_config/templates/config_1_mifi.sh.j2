@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Set password to S Defaukt
+echo -e "{{ mifi_root_password }}\n{{ mifi_root_password }}"
+
+# Set LAN Address
+uci set network.lan.ipaddr='{{ mifi_lan_ipaddr }}'
+uci set network.lan.netmask='{{ mifi_lan_netmask }}'
+uci commit
+/etc/init.d/network restart
